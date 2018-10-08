@@ -1,0 +1,26 @@
+.fixtobottom{
+  position: absolute;
+  bottom: 0px;
+  width: 100vw;
+}
+
+.header{
+  padding-top: 30vh;
+}
+h6{
+  width: 50%;
+  margin: auto;
+  padding-top: 1em;
+}
+
+.para{
+  width: 80%;
+  margin: auto;
+  font-size: 0.9em;
+  padding-top: 2em;
+}
+
+.form{
+  width: 50%;
+  margin: auto;
+}
