@@ -65,7 +65,7 @@
       <div class="alert alert-danger" role="alert">
           <ul>
             <?php foreach($errors as $singleError): ?>
-              <li><?= $singleError ?></li>
+              <li class="itemStyle"><?= $singleError ?></li>
             <?php endforeach; ?>
           </ul>
       </div>

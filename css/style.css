@@ -24,3 +24,11 @@ h6{
   width: 50%;
   margin: auto;
 }
+.alert{
+  width: 50%;
+  margin: auto;
+}
+
+.itemStyle{
+  list-style-type: none;
+}

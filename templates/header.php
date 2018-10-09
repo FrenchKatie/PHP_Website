@@ -22,4 +22,7 @@
   <li class="nav-item">
     <a class="nav-link <?php if($page === 'fourth'): ?> active <?php endif; ?>" href="contact.php">Contact</a>
   </li>
+  <li class="nav-item">
+    <a class="nav-link <?php if($page === 'imageUpload'): ?> active <?php endif; ?>" href="imageUpload.php">Image Upload</a>
+  </li>
 </ul>
