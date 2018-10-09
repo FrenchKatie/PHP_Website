@@ -2,16 +2,18 @@
       // phpInfo();
       // die();
 
+      // include composer autoload
+      require 'vendor/autoload.php';
+
+      // import the Intervention Image Manager Class
+      use Intervention\Image\ImageManager;
+
       $errors = array();
 
       if(isset($_FILES["image"])){
         $fileSize = $_FILES["image"]["size"];      // is the image too large?
         $fileTmp =  $_FILES["image"]["tmp_name"];  // what is the temporary name?
         $fileType = $_FILES["image"]["type"];      // what is it? PDF etc
-
-        // var_dump($fileSize);
-        // var_dump($fileTmp);
-        // var_dump($fileType);
 
 
         if($fileSize > 5000000){ //if the file is larger than 5mb
@@ -27,16 +29,43 @@
           array_push($errors, "File type not allowed, can only be a JPG or a PNG");
         }
 
-        $destination = "images/uploads";
-        if (! is_dir($destination)) { //checking to see if the folder exists
-          mkdir("images/uploads/", 0777, true); //if the folder does not exist then make it. Always good to have this as you would probably put your uploads folder in your gitignore file
+        if (empty($errors)) {
+          $destination = "images/uploads";
+          if (! is_dir($destination)) { //checking to see if the folder exists
+            mkdir("images/uploads/", 0777, true); //if the folder does not exist then make it. Always good to have this as you would probably put your uploads folder in your gitignore file
+          }
+          //create a random name for the saved image - for example if multiple people were to upload an image with the same name we would have errors
+          $newFileName = uniqid() .".". $fileExt; //keep the same extension as you dont want to lose things like transparancy if it was a png
+          // move_uploaded_file($fileTmp, $destination."/".$newFileName);
+
+          $manager = new ImageManager();
+
+          $mainImage = $manager->make($fileTmp);
+          $mainImage->save($destination . "/" . $newFileName, 100);
+
+
+
+          //creating thumbnail image
+          $thumbDestination = "images/uploads/thumbnails";
+
+          if (! is_dir($thumbDestination)) { //checking to see if thumbnail folder exists - if not, make it
+            mkdir("images/uploads/thumbnails/", 0777, true);
+          }
+
+          $thumbnailImage = $manager->make($fileTmp);
+
+          $thumbnailImage->resize(300, null, function($constraint){ //resizes the width of the image to 300px for the thumbnail version
+            $constraint->aspectRatio();
+            $constraint->upsize();
+          });
+          $thumbnailImage->save($thumbDestination . "/" . $newFileName, 100); //save function has two props - where and keep quality percent. so keep the quality at 100%
+
+
+
         }
 
-        //create a random name for the saved image - for example if multiple people were to upload an image with the same name we would have errors
-        $newFileName = uniqid() .".". $fileExt; //keep the same extension as you dont want to lose things like transparancy if it was a png
-        move_uploaded_file($fileTmp, $destination."/".$newFileName);
-
         die();
+
       } else {
         array_push($errors, "File not found, please upload an image");
       }
